@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cosméticos y Cuidado Personal</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #ffe3ec, #ffd1dc);
+      color: #333;
+    }
+    header {
+      background: linear-gradient(to right, #f06292, #ec407a);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    header img { height: 60px; vertical-align: middle; }
+    header h1 {
+      display: inline-block;
+      margin-left: 15px;
+      font-size: 2em;
+    }
+    header p {
+      margin-top: 10px;
+      font-style: italic;
+      font-size: 1.1em;
+    }
+    .registro {
+      padding: 50px 20px;
+      text-align: center;
+      background-color: #fff0f5;
+      animation: fadeIn 1s ease;
+    }
+    .registro input, .registro button {
+      padding: 12px;
+      margin: 10px;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      font-size: 1em;
+      transition: all 0.3s ease;
+    }
+    .registro input:focus {
+      outline: none;
+      border-color: #e91e63;
+      box-shadow: 0 0 5px #f06292;
+    }
+    .registro button {
+      background-color: #e91e63;
+      color: white;
+      cursor: pointer;
+    }
+    .registro button:hover {
+      background-color: #d81b60;
+      transform: scale(1.05);
+    }
+    nav {
+      display: none;
+      background-color: #f8bbd0;
+      padding: 10px;
+      text-align: center;
+      animation: slideIn 1s ease;
+    }
+    nav a, nav button {
+      margin: 0 15px;
+      color: #880e4f;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1.1em;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    nav a:hover, nav button:hover {
+      color: #c2185b;
+    }
+
+    .categoria {
+      padding: 40px 20px;
+      display: none;
+      animation: fadeInUp 1s ease forwards;
+    }
+
+    .categoria h2 {
+      color: #ad1457;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 1.8em;
+    }
+
+    .producto {
+      display: inline-block;
+      width: 28%;
+      margin: 1%;
+      background-color: white;
+      padding: 15px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+      border-radius: 15px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      opacity: 0;
+      animation: fadeInCard 1s ease forwards;
+    }
+
+    .producto:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.2);
+    }
+
+    .producto img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    .producto button {
+      margin-top: 10px;
+      padding: 8px 12px;
+      background-color: #ec407a;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .producto button:hover {
+      background-color: #d81b60;
+    }
+
+    .precio {
+      color: #ad1457;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    footer {
+      background-color: #e91e63;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 50px;
+      display: none;
+    }
+
+    #catalogo {
+      display: none;
+    }
+
+    /* Carrito */
+    #carrito {
+      position: fixed;
+      right: 0;
+      top: 0;
+      width: 300px;
+      height: 100%;
+      background: white;
+      box-shadow: -5px 0 10px rgba(0,0,0,0.2);
+      padding: 20px;
+      display: none;
+      z-index: 1000;
+    }
+
+    #carrito h3 {
+      margin-bottom: 10px;
+      color: #ad1457;
+    }
+
+    #carrito ul {
+      list-style: none;
+      padding: 0;
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+
+    #carrito li {
+      margin-bottom: 10px;
+    }
+
+    #carrito-total {
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    #carrito-close {
+      float: right;
+      cursor: pointer;
+      font-weight: bold;
+      color: red;
+    }
+
+    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+    @keyframes slideIn { from {transform: translateY(-100%);} to {transform: translateY(0);} }
+    @keyframes fadeInUp { from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);} }
+    @keyframes fadeInCard { to {opacity: 1;} }
+  </style>
+</head>
+<body>
+
+<header>
+<img src="C:\Users\yesic\Downloads\cosmeticos\imagen 1.jpg" alt="Logotipo grande" />
+<h1>Cosméticos y Cuidado Personal</h1>
+  <p>Atrevete a ser unica 💄✨</p>
+</header>
+
+<section class="registro" id="registro">
+  <h2>Registro de Usuario</h2>
+  <input type="text" id="nombre" placeholder="Nombre completo" required><br>
+  <input type="email" id="correo" placeholder="Correo electrónico" required><br>
+  <input type="password" id="clave" placeholder="Contraseña" required><br>
+  <button onclick="registrar()">Registrarse</button>
+</section>
+
+<nav id="navegacion">
+  <a href="#maquillaje">Maquillaje</a>
+  <a href="#facial">Facial</a>
+  <a href="#cabello">Cabello</a>
+  <button onclick="mostrarCarrito()">🛒 Carrito (<span id="contadorCarrito">0</span>)</button>
+</nav>
+
+<div id="carrito">
+  <span id="carrito-close" onclick="ocultarCarrito()">X</span>
+  <h3>Carrito de compras</h3>
+  <ul id="lista-carrito"></ul>
+ <div id="carrito-total">Total: $<span id="total">0.00</span> MXN</div>
+
+<!-- Formulario de pago -->
+<h4>Datos de tarjeta</h4>
+<input type="text" id="nombre-tarjeta" placeholder="Nombre en la tarjeta" style="width: 100%; margin: 5px 0; padding: 8px;" />
+<input type="text" id="numero-tarjeta" placeholder="Número de tarjeta" maxlength="16" style="width: 100%; margin: 5px 0; padding: 8px;" />
+<input type="text" id="fecha-expiracion" placeholder="MM/AA" maxlength="5" style="width: 48%; margin: 5px 1% 5px 0; padding: 8px;" />
+<input type="text" id="cvv" placeholder="CVV" maxlength="3" style="width: 48%; margin: 5px 0; padding: 8px;" />
+<button onclick="realizarCompra()" style="width: 100%; background-color: green; color: white; padding: 10px; margin-top: 10px; border: none; border-radius: 5px;">Comprar</button>
+
+</div>
+
+<section id="catalogo">
+
+  <div class="categoria" id="maquillaje">
+    <h2>Maquillaje</h2>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Base liquida.jpg"="Base liquida"/>
+      <h3>Base Líquida </h3>
+      <p>Acabado natural.</p>
+      <div class="precio">$180.00</div>
+      <button onclick="agregarAlCarrito('Base Líquida HD', 180)">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Rubor compacto.jpg"="Rubor Compacto" />
+      <h3>Rubor Compacto</h3>
+      <p>Color duradero.</p>
+      <div class="precio">$115.00</div>
+      <button onclick="agregarAlCarrito('Rubor Compacto', 115)">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\delineador liquido.jpg"="Delineador Líquido" />
+      <h3>Delineador Líquido</h3>
+      <p>Precisión total.</p>
+      <div class="precio">$186.00</div>
+      <button onclick="agregarAlCarrito('Delineador Líquido', 186)">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Mascara de pestañas.jpg"="Máscara de Pestañas" />
+      <h3>Máscara de Pestañas</h3>
+      <p>Volumen extremo.</p>
+      <div class="precio">$257.00</div>
+      <button onclick="agregarAlCarrito('Máscara de Pestañas', 257)">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Labial mate.jpg"="Labial Mate" />
+      <h3>Labial Mate</h3>
+      <p>Color intenso.</p>
+      <div class="precio">$200.00</div>
+      <button onclick="agregarAlCarrito('Labial Mate', 200)">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Iluminador.jpg"="Iluminador" />
+      <h3>Iluminador</h3>
+      <p>Brillo natural.</p>
+      <div class="precio">$235.00</div>
+      <button onclick="agregarAlCarrito('Iluminador', 235)">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Corrector.jpg"="Corrector" />
+      <h3>Corrector</h3>
+      <p>Cubre imperfecciones.</p>
+      <div class="precio">$130.00</div>
+      <button onclick="agregarAlCarrito('Corrector', 130)">Agregar</button>
+    </div>
+  </div>
+
+  <div class="categoria" id="facial">
+    <h2>Facial</h2>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Espuma limpiadora.png"="Espuma Limpiadora" />
+      <h3>Espuma Limpiadora</h3>
+      <p>Limpieza suave.</p>
+      <div class="precio">$110.00</div>
+      <button onclick="agregarAlCarrito('Espuma Limpiadora', 110)">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Tonico facial.jpg"="Tónico Facial" />
+      <h3>Tónico Facial</h3>
+      <p>Refresca la piel.</p>
+      <div class="precio">$90.00</div>
+      <button onclick="agregarAlCarrito('Tónico Facial', 90)">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Crema hidratante.jpg"="Crema Hidratante" />
+      <h3>Crema Hidratante</h3>
+      <p>Hidratación profunda.</p>
+      <div class="precio">$210.00</div>
+      <button onclick="agregarAlCarrito('Crema Hidratante', 210)">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Protector solar.jpg"="Protector Solar" />
+      <h3>Protector Solar</h3>
+      <p>Alta protección UV.</p>
+      <div class="precio">$190.00</div>
+      <button onclick="agregarAlCarrito('Protector Solar', 190)">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Mascarilla de arcilla.jpg"="Mascarilla de Arcilla" />
+      <h3>Mascarilla de Arcilla</h3>
+      <p>Limpieza profunda.</p>
+      <div class="precio">$160.00</div>
+      <button onclick="agregarAlCarrito('Mascarilla de Arcilla', 160)">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Serum facial.jpg"="Serum Facial" />
+      <h3>Serum facial </h3>
+      <p>Rejuvenecedor.</p>
+      <div class="precio">$280.00</div>
+      <button onclick="agregarAlCarrito('Serum Facial', 280)">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Exfoliante facial.jpg"="Exfoliante Facial" />
+      <h3>Exfoliante Facial</h3>
+      <p>Renueva piel.</p>
+      <div class="precio">$130.00</div>
+      <button onclick="agregarAlCarrito('Exfoliante Facial', 130)">Agregar</button>
+    </div>
+  </div>
+
+  <div class="categoria" id="cabello">
+    <h2>Cabello</h2>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Shampoo hidratante.jpg"="Shampoo Hidratante" />
+      <h3>Shampoo Hidratante</h3>
+      <p>Cabello suave.</p>
+      <div class="precio">$160.00</div>
+      <button onclick="agregarAlCarrito('Shampoo Hidratante', 160)">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Acondicionador nutritivo.jpg"="Acondicionador Nutritivo" />
+      <h3>Acondicionador Nutritivo</h3>
+      <p>Nutrición intensa.</p>
+      <div class="precio">$170.00</div>
+      <button onclick="agregarAlCarrito('Acondicionador Nutritivo', 170)">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Mascarilla capilar.jpg"="Mascarilla Capilar" />
+      <h3>Mascarilla Capilar</h3>
+      <p>Repara y fortalece.</p>
+      <div class="precio">$220.00</div>
+      <button onclick="agregarAlCarrito('Mascarilla Capilar', 220)">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Aceite para el cabello.jpg"="Aceite para Cabello" />
+      <h3>Aceite para Cabello</h3>
+      <p>Brillo y suavidad.</p>
+      <div class="precio">$190.00</div>
+      <button onclick="agregarAlCarrito('Aceite para Cabello', 190)">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Spray anti frizz.jpg"="Spray Antifrizz" />
+      <h3>Spray Antifrizz</h3>
+      <p>Controla el frizz.</p>
+      <div class="precio">$140.00</div>
+      <button onclick="agregarAlCarrito('Spray Antifrizz', 140)">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Gel estilizador.jpg"="Gel Estilizador" />
+      <h3>Gel Estilizador</h3>
+      <p>Fijación fuerte.</p>
+      <div class="precio">$120.00</div>
+      <button onclick="agregarAlCarrito('Gel Estilizador', 120)">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="C:\Users\yesic\Downloads\cosmeticos\Spray protector termico.jpg"="Spray Protector Térmico" />
+      <h3>Spray Protector Térmico</h3>
+      <p>Protege del calor.</p>
+      <div class="precio">$180.00</div>
+      <button onclick="agregarAlCarrito('Spray Protector Térmico', 180)">Agregar</button>
+    </div>
+  </div>
+</section>
+
+<footer id="footer">
+  © 2025 Cosméticos y Cuidado Personal - Santiago Tuxtla Ver.Calle Diaz Miron
+    <p>Teléfono: 294-141-2506</p>
+    <div class="redes">
+      <a href="https://www.facebook.com/share/19HgwPgnrr/?mibextid=qi2Omg">Facebook</a> |
+      <a href="https://whatsapp.com/channel/0029VbAfugo4Y9lm3QyYPg1A">WhatsApp</a> |
+
+      
+    </div>
+
+</footer>
+
+<script>
+  const registro = document.getElementById('registro');
+  const navegacion = document.getElementById('navegacion');
+  const catalogo = document.getElementById('catalogo');
+  const footer = document.getElementById('footer');
+  const contadorCarrito = document.getElementById('contadorCarrito');
+  const carritoElement = document.getElementById('carrito');
+  const listaCarrito = document.getElementById('lista-carrito');
+  const totalCarrito = document.getElementById('total');
+
+  let carrito = [];
+
+  function registrar() {
+    const nombre = document.getElementById('nombre').value.trim();
+    const correo = document.getElementById('correo').value.trim();
+    const clave = document.getElementById('clave').value.trim();
+    if (!nombre || !correo || !clave) {
+      alert('Por favor, completa todos los campos para registrarte.');
+      return;
+    }
+    // Simple validación de email
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!emailRegex.test(correo)) {
+      alert('Correo electrónico no válido.');
+      return;
+    }
+    // Ocultar registro y mostrar catálogo y navegación
+    registro.style.display = 'none';
+    navegacion.style.display = 'block';
+    catalogo.style.display = 'block';
+    footer.style.display = 'block';
+  }
+
+  function agregarAlCarrito(nombre, precio) {
+    carrito.push({ nombre, precio });
+    actualizarCarrito();
+  }
+
+  function actualizarCarrito() {
+    contadorCarrito.textContent = carrito.length;
+    listaCarrito.innerHTML = '';
+    let total = 0;
+    carrito.forEach((item, index) => {
+      total += item.precio;
+      const li = document.createElement('li');
+      li.textContent = `${item.nombre} - $${item.precio.toFixed(2)} MXN`;
+      // Botón para eliminar
+      const btnEliminar = document.createElement('button');
+      btnEliminar.textContent = 'Eliminar';
+      btnEliminar.style.marginLeft = '10px';
+      btnEliminar.style.backgroundColor = '#e91e65';
+      btnEliminar.style.color = 'white';
+      btnEliminar.style.border = 'none';
+      btnEliminar.style.borderRadius = '5px';
+      btnEliminar.style.cursor = 'pointer';
+      btnEliminar.onclick = () => {
+        carrito.splice(index, 1);
+        actualizarCarrito();
+      };
+      li.appendChild(btnEliminar);
+      listaCarrito.appendChild(li);
+    });
+    totalCarrito.textContent = total.toFixed(2);
+  }
+
+  function mostrarCarrito() {
+    carritoElement.style.display = 'block';
+  }
+  function ocultarCarrito() {
+    carritoElement.style.display = 'none';
+  }
+
+  // Mostrar categoría según enlace
+  navegacion.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = e.target.getAttribute('href').substring(1);
+      document.querySelectorAll('.categoria').forEach(cat => {
+        cat.style.display = cat.id === target ? 'block' : 'none';
+      });
+    });
+  });
+
+  // Inicialmente mostrar la primera categoría al entrar al catálogo
+  document.addEventListener('DOMContentLoaded', () => {
+    // Nada mostrado hasta registro
+  });
+function realizarCompra() {
+  const nombre = document.getElementById('nombre-tarjeta').value.trim();
+  const numero = document.getElementById('numero-tarjeta').value.trim();
+  const fecha = document.getElementById('fecha-expiracion').value.trim();
+  const cvv = document.getElementById('cvv').value.trim();
+
+  if (!nombre || !numero || !fecha || !cvv) {
+    alert('Por favor, completa todos los datos de la tarjeta.');
+    return;
+  }
+
+  if (!/^\d{16}$/.test(numero)) {
+    alert('El número de tarjeta debe tener 16 dígitos.');
+    return;
+  }
+
+  if (!/^\d{2}\/\d{2}$/.test(fecha)) {
+    alert('La fecha de expiración debe tener el formato MM/AA.');
+    return;
+  }
+
+  if (!/^\d{3}$/.test(cvv)) {
+    alert('El CVV debe tener 3 dígitos.');
+    return;
+  }
+
+  if (carrito.length === 0) {
+    alert('El carrito está vacío.');
+    return;
+  }
+
+  alert('¡Compra realizada con éxito! Gracias por tu pedido.');
+  carrito = [];
+  actualizarCarrito();
+  ocultarCarrito();
+
+  // Limpiar formulario
+  document.getElementById('nombre-tarjeta').value = '';
+  document.getElementById('numero-tarjeta').value = '';
+  document.getElementById('fecha-expiracion').value = '';
+  document.getElementById('cvv').value = '';
+}
+
+</script>
+
+</body>
+</html>    
